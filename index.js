@@ -82,7 +82,7 @@ app.post("/webhook", function (req, res) {
                             ". Nếu bây giờ đi ngủ thì giờ bạn nên dậy lúc ";
 
                         for (i = 3; i <= 6; ++i) {
-                            let t = new Date(now + (14 + 90 * i) * 60);
+                            let t = new Date(now + (14 + 90 * i) * 60000);
                             time.push(formatAMPM(t));
                             if (i != 6) res += time[i - 3] + ", ";
                         }
