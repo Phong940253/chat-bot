@@ -61,14 +61,16 @@ app.post("/webhook", function (req, res) {
                     if (text == "hi" || text == "hello") {
                         sendMessage(senderId, "Xin Chào");
                     } else if (text == "ngủ") {
-                        let date = new Date();
+                        let date = new Date().toLocaleString("en-US", {
+                            timeZone: "Asia/Ho_Chi_Minh",
+                        });
                         let now = date.getTime();
                         let time = [];
 
                         const formatAMPM = (date) => {
                             var hours = date.getHours();
                             var minutes = date.getMinutes();
-                            var ampm = hours >= 12 ? "pm" : "am";
+                            var ampm = hours >= 12 ? "PM" : "AM";
                             hours = hours % 12;
                             hours = hours ? hours : 12; // the hour '0' should be '12'
                             minutes = minutes < 10 ? "0" + minutes : minutes;
@@ -82,7 +84,11 @@ app.post("/webhook", function (req, res) {
                             ". Nếu bây giờ đi ngủ thì giờ bạn nên dậy lúc ";
 
                         for (i = 3; i <= 6; ++i) {
-                            let t = new Date(now + (14 + 90 * i));
+                            let t = new Date(
+                                now + (14 + 90 * i)
+                            ).toLocaleString("en-US", {
+                                timeZone: "Asia/Ho_Chi_Minh",
+                            });
                             time.push(formatAMPM(t));
                             if (i != 6) res += time[i - 3] + ", ";
                         }
