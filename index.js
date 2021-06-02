@@ -79,7 +79,7 @@ app.post("/webhook", function (req, res) {
                         let res =
                             "Bây giờ là " +
                             formatAMPM(date) +
-                            ". Nếu bây giờ đi ngủ thì giờ bạn nên dậy lúc ";
+                            ". Nếu bây giờ đi ngủ thì bạn nên dậy lúc ";
 
                         for (i = 3; i <= 6; ++i) {
                             let t = new Date(now + (14 + 90 * i) * 60000);
@@ -89,12 +89,12 @@ app.post("/webhook", function (req, res) {
                         res +=
                             "và cả " +
                             time[3] +
-                            " (đã tính thời gian để chìm vào giấc ngủ)";
+                            " để cảm thấy tỉnh táo, minh mẫn (đã tính thời gian để chìm vào giấc ngủ)";
                         sendMessage(senderId, res);
                     } else {
                         sendMessage(
                             senderId,
-                            "Xin lỗi, câu hỏi của bạn chưa có trong hệ thống, chúng tôi sẽ cập nhật sớm nhất."
+                            "Xin lỗi, câu hỏi của bạn chưa có trong hệ thống, bot sẽ cập nhật sớm nhất."
                         );
                     }
                 }
