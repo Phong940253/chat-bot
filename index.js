@@ -67,7 +67,7 @@ app.post("/webhook", function (req, res) {
                         let time = [];
                         for (i = 3; i <= 6; ++i) {
                             let t = new Date(now + (14 + 90 * i));
-                            time.push(t.getHours + ":" + t.getMinutes);
+                            time.push(t.getHours() + ":" + t.getMinutes());
                             if (i != 6) res += time[time.length - 1] + ", ";
                         }
                         res +=
