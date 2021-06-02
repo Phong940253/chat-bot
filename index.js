@@ -68,7 +68,7 @@ app.post("/webhook", function (req, res) {
                         for (i = 3; i <= 6; ++i) {
                             let t = new Date(now + (14 + 90 * i));
                             time.push(t.getHours() + ":" + t.getMinutes());
-                            if (i != 6) res += time[time.length - 1] + ", ";
+                            if (i != 6) res += time[i - 3] + ", ";
                         }
                         res +=
                             "và cả " +
