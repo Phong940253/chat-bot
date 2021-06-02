@@ -61,9 +61,7 @@ app.post("/webhook", function (req, res) {
                     if (text == "hi" || text == "hello") {
                         sendMessage(senderId, "Xin Chào");
                     } else if (text == "ngủ") {
-                        let date = new Date().toLocaleString("en-US", {
-                            timeZone: "Asia/Ho_Chi_Minh",
-                        });
+                        let date = new Date();
                         let now = date.getTime();
                         let time = [];
 
@@ -84,11 +82,7 @@ app.post("/webhook", function (req, res) {
                             ". Nếu bây giờ đi ngủ thì giờ bạn nên dậy lúc ";
 
                         for (i = 3; i <= 6; ++i) {
-                            let t = new Date(
-                                now + (14 + 90 * i)
-                            ).toLocaleString("en-US", {
-                                timeZone: "Asia/Ho_Chi_Minh",
-                            });
+                            let t = new Date(now + (14 + 90 * i));
                             time.push(formatAMPM(t));
                             if (i != 6) res += time[i - 3] + ", ";
                         }
