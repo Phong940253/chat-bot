@@ -59,12 +59,26 @@ app.post("/webhook", function (req, res) {
                 if (message.message.text) {
                     var text = message.message.text;
                     if (text == "hi" || text == "hello") {
-                        sendMessage(senderId, "Phong's Bot: " + "Xin Chào");
+                        sendMessage(senderId, "Xin Chào");
+                    } else if (text == "ngủ") {
+                        let res = "Nếu bây giờ đi ngủ thì giờ bạn nên dậy lúc ";
+                        let date = new Date();
+                        let now = date.getTime();
+                        let time = [];
+                        for (i = 3; i <= 6; ++i) {
+                            let t = new Date(now + (14 + 90 * i));
+                            time.push(t.getHours + ":" + t.getMinutes);
+                            if (i != 6) res += time[time.length - 1] + ", ";
+                        }
+                        res +=
+                            "và cả " +
+                            time[3] +
+                            " (đã tính thời gian để chìm vào giấc ngủ)";
+                        sendMessage(senderId, res);
                     } else {
                         sendMessage(
                             senderId,
-                            "Phong's Bot: " +
-                                "Xin lỗi, câu hỏi của bạn chưa có trong hệ thống, chúng tôi sẽ cập nhật sớm nhất."
+                            "Xin lỗi, câu hỏi của bạn chưa có trong hệ thống, chúng tôi sẽ cập nhật sớm nhất."
                         );
                     }
                 }
