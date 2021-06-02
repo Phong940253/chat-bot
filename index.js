@@ -57,7 +57,7 @@ app.post("/webhook", function (req, res) {
             if (message.message) {
                 // Nếu người dùng gửi tin nhắn đến
                 if (message.message.text) {
-                    var text = message.message.text;
+                    var text = message.message.text.toLowerCase();
                     if (text == "hi" || text == "hello") {
                         sendMessage(senderId, "Xin Chào");
                     } else if (text == "ngủ") {
