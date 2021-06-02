@@ -24,37 +24,32 @@ app.get("/", (req, res) => {
     res.send("Server chạy ngon lành.");
 });
 
-app.get('/webhook', (req, res) => {
+app.get("/webhook", (req, res) => {
+    // Your verify token. Should be a random string.
+    let VERIFY_TOKEN = "phong";
 
-  // Your verify token. Should be a random string.
-  let VERIFY_TOKEN = "phong"
-    
-  // Parse the query params
-  let mode = req.query['hub.mode'];
-  let token = req.query['hub.verify_token'];
-  let challenge = req.query['hub.challenge'];
-    
-  // Checks if a token and mode is in the query string of the request
-  if (mode && token) {
-  
-    // Checks the mode and token sent is correct
-    if (mode === 'subscribe' && token === VERIFY_TOKEN) {
-      
-      // Responds with the challenge token from the request
-      console.log('WEBHOOK_VERIFIED');
-      res.status(200).send(challenge);
-    
-    } else {
-      // Responds with '403 Forbidden' if verify tokens do not match
-      res.sendStatus(403);      
+    // Parse the query params
+    let mode = req.query["hub.mode"];
+    let token = req.query["hub.verify_token"];
+    let challenge = req.query["hub.challenge"];
+
+    // Checks if a token and mode is in the query string of the request
+    if (mode && token) {
+        // Checks the mode and token sent is correct
+        if (mode === "subscribe" && token === VERIFY_TOKEN) {
+            // Responds with the challenge token from the request
+            console.log("WEBHOOK_VERIFIED");
+            res.status(200).send(challenge);
+        } else {
+            // Responds with '403 Forbidden' if verify tokens do not match
+            res.sendStatus(403);
+        }
     }
-  }
 });
 
 // Đoạn code xử lý khi có người nhắn tin cho bot
 app.post("/webhook", function (req, res) {
     var entries = req.body.entry;
-    console.log(entries);
     for (var entry of entries) {
         var messaging = entry.messaging;
         for (var message of messaging) {
@@ -99,4 +94,3 @@ function sendMessage(senderId, message) {
         },
     });
 }
-
