@@ -61,13 +61,29 @@ app.post("/webhook", function (req, res) {
                     if (text == "hi" || text == "hello") {
                         sendMessage(senderId, "Xin Chào");
                     } else if (text == "ngủ") {
-                        let res = "Nếu bây giờ đi ngủ thì giờ bạn nên dậy lúc ";
                         let date = new Date();
                         let now = date.getTime();
                         let time = [];
+
+                        const formatAMPM = (date) => {
+                            var hours = date.getHours();
+                            var minutes = date.getMinutes();
+                            var ampm = hours >= 12 ? "pm" : "am";
+                            hours = hours % 12;
+                            hours = hours ? hours : 12; // the hour '0' should be '12'
+                            minutes = minutes < 10 ? "0" + minutes : minutes;
+                            var strTime = hours + ":" + minutes + " " + ampm;
+                            return strTime;
+                        };
+
+                        let res =
+                            "Bây giờ là " +
+                            formatAMPM(date) +
+                            ". Nếu bây giờ đi ngủ thì giờ bạn nên dậy lúc ";
+
                         for (i = 3; i <= 6; ++i) {
                             let t = new Date(now + (14 + 90 * i));
-                            time.push(t.getHours() + ":" + t.getMinutes());
+                            time.push(formatAMPM(t));
                             if (i != 6) res += time[i - 3] + ", ";
                         }
                         res +=
