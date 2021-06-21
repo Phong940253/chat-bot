@@ -6,6 +6,7 @@ var http = require("http");
 var bodyParser = require("body-parser");
 var express = require("express");
 var request = require("request");
+require("dotenv").config();
 var router = express();
 
 var app = express();
@@ -26,7 +27,7 @@ app.get("/", (req, res) => {
 
 app.get("/webhook", (req, res) => {
     // Your verify token. Should be a random string.
-    let VERIFY_TOKEN = process.env.VERIFY_TOKEN;
+    let VERIFY_TOKEN = process.env.verify_token;
 
     // Parse the query params
     let mode = req.query["hub.mode"];
@@ -42,6 +43,7 @@ app.get("/webhook", (req, res) => {
             res.status(200).send(challenge);
         } else {
             // Responds with '403 Forbidden' if verify tokens do not match
+            // console.log(token, VERIFY_TOKEN);
             res.sendStatus(403);
         }
     }
