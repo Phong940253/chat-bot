@@ -1,6 +1,7 @@
 // # SimpleServer
 // A simple chat bot server
-
+const P = require("bluebird");
+const TelegramBot = require("node-telegram-bot-api");
 var logger = require("morgan");
 var http = require("http");
 var bodyParser = require("body-parser");
@@ -8,6 +9,10 @@ var express = require("express");
 var request = require("request");
 require("dotenv").config();
 var router = express();
+
+// create bot telegram
+const token = process.env.token_telegram;
+const bot = new TelegramBot(token, { polling: true });
 
 var app = express();
 app.use(logger("dev"));
@@ -18,7 +23,6 @@ app.use(
     })
 );
 var server = http.createServer(app);
-
 app.listen(process.env.PORT || 3000);
 
 app.get("/", (req, res) => {
@@ -125,3 +129,10 @@ function sendMessage(senderId, message) {
         },
     });
 }
+
+// process message telegramBot
+bot.onText(/\/echo (.+)/, (msg, match) => {
+    const chatId = msg.chat.id;
+    const resp = match[1];
+    bot.sendMessage(chatId, resp);
+});

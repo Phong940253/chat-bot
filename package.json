@@ -10,10 +10,13 @@
     "author": "phong",
     "license": "ISC",
     "dependencies": {
+        "add": "^2.0.6",
+        "bluebird": "^3.7.2",
         "body-parser": "^1.19.0",
         "dotenv": "^10.0.0",
         "express": "^4.17.1",
         "morgan": "^1.10.0",
+        "node-telegram-bot-api": "^0.53.0",
         "request": "^2.88.2"
     }
 }
