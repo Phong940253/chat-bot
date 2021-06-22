@@ -160,12 +160,14 @@ bot.onText(/\/audio (.+)/, (msg, match) => {
                     const object = eval("[" + res + "]");
                     const resp = object[0].file;
                     // console.log(object);
-                    bot.sendMessage(chatId, resp);
+                    bot.sendMessage(chatId, resp).then(() => {
+                        pollinglikeV0(chatId);
+                    });
                 })
                 .catch((e) => {
                     bot.sendMessage(
                         chatId,
-                        "Lỗi hệ thống! Bot chỉ có thể search tới đây: "
+                        "Lỗi hệ thống! BOT chỉ có thể search tới đây: "
                     ).then(() => {
                         bot.sendMessage(chatId, music_link).then(() => {
                             pollinglikeV0(chatId);
