@@ -17,7 +17,7 @@ const slcount = require("./modules/sleepCounter/index.js");
 const token = process.env.token_telegram;
 const url = process.env.APP_URL;
 const bot = new TelegramBot(token, { polling: true });
-bot.setWebHook("${url}/bot${TOKEN}");
+bot.setWebHook(url + "/bot" + token);
 
 var app = express();
 app.use(logger("dev"));
