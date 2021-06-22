@@ -153,7 +153,10 @@ bot.onText(/\/audio (.+)/, (msg, match) => {
                     bot.sendMessage(chatId, resp);
                 })
                 .catch((e) => {
-                    bot.sendMessage(chatId, e);
+                    bot.sendMessage(
+                        chatId,
+                        "Lỗi hệ thống! bạn hãy tìm bài khác"
+                    );
                 });
         });
 });
