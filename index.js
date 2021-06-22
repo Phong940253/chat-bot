@@ -151,6 +151,9 @@ bot.onText(/\/audio (.+)/, (msg, match) => {
                     const resp = object[0].file;
                     // console.log(object);
                     bot.sendMessage(chatId, resp);
+                })
+                .catch((e) => {
+                    bot.sendMessage(chatId, e);
                 });
         });
 });
