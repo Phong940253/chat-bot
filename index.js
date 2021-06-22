@@ -166,9 +166,11 @@ bot.onText(/\/audio (.+)/, (msg, match) => {
                     bot.sendMessage(
                         chatId,
                         "Lỗi hệ thống! Bot chỉ có thể search tới đây: "
-                    );
-                    bot.sendMessage(chatId, music_link);
-                    pollinglikeV0(chatId);
+                    ).then(() => {
+                        bot.sendMessage(chatId, music_link).then(() => {
+                            pollinglikeV0(chatId);
+                        });
+                    });
                 });
         });
 });
