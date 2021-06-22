@@ -19,5 +19,8 @@
         "node-fetch": "^2.6.1",
         "node-telegram-bot-api": "^0.53.0",
         "request": "^2.88.2"
+    },
+    "engines": {
+        "node": "15.x"
     }
 }
