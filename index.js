@@ -115,6 +115,15 @@ pollinglike = (id) => {
     bot.sendPoll(id, question, answers, opts);
 };
 
+pollinglikeV0 = (id) => {
+    const question = "Hãy cho BOT biết cảm nhận của bạn nha!";
+    const answers = ["Hài lòng", "Chưa vừa ý"];
+    const opts = {
+        is_anonymous: true,
+    };
+    bot.sendPoll(id, question, answers, opts);
+};
+
 // Main command
 
 // echo
@@ -137,10 +146,11 @@ bot.onText(/\/audio (.+)/, (msg, match) => {
     };
     url.search = new URLSearchParams(params).toString();
     // console.log(url);
+    let music_link;
     fetch(url)
         .then((rep) => rep.json())
         .then((data) => {
-            const music_link = data[0].music.data[0].music_link;
+            music_link = data[0].music.data[0].music_link;
             fetch(music_link)
                 .then((rep) => rep.text())
                 .then((data) => {
@@ -155,8 +165,10 @@ bot.onText(/\/audio (.+)/, (msg, match) => {
                 .catch((e) => {
                     bot.sendMessage(
                         chatId,
-                        "Lỗi hệ thống! bạn hãy tìm bài khác"
+                        "Lỗi hệ thống! Bot chỉ có thể search tới đây: "
                     );
+                    bot.sendMessage(chatId, music_link);
+                    pollinglikeV0(chatId);
                 });
         });
 });
