@@ -197,7 +197,7 @@ bot.onText(
 bot.on("message", (msg) => {
     const chatId = msg.chat.id;
     text = msg.text.toLowerCase();
-    regex = /ngủ|ngu|sleep/;
+    regex = /^ngủ|ngu|sleep/;
     if (regex.test(text)) {
         const resp = slcount.sleepCounter();
         bot.sendMessage(chatId, resp);
