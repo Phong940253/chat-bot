@@ -151,11 +151,11 @@ bot.onText(/\/audio (.+)/, (msg, match) => {
     let music_link;
     let html;
     let match_rege;
-    fetch(url)
+    fetch(url, { method: "GET", credentials: "same-origin" })
         .then((rep) => rep.json())
         .then((data) => {
             music_link = data[0].music.data[0].music_link;
-            fetch(music_link)
+            fetch(music_link, { method: "GET", credentials: "same-origin" })
                 .then((rep) => rep.text())
                 .then((data) => {
                     html = data;
@@ -171,7 +171,6 @@ bot.onText(/\/audio (.+)/, (msg, match) => {
                     });
                 })
                 .catch((e) => {
-                    console.log(html, match_rege);
                     bot.sendMessage(
                         chatId,
                         "Lỗi hệ thống! BOT chỉ có thể search tới đây: "
