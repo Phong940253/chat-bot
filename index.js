@@ -149,6 +149,7 @@ bot.onText(/\/audio (.+)/, (msg, match) => {
     url.search = new URLSearchParams(params).toString();
     // console.log(url);
     let music_link;
+    let html;
     fetch(url)
         .then((rep) => rep.json())
         .then((data) => {
@@ -156,6 +157,7 @@ bot.onText(/\/audio (.+)/, (msg, match) => {
             fetch(music_link)
                 .then((rep) => rep.text())
                 .then((data) => {
+                    html = data;
                     const rege = /sources: \[([\s\S]*)\],/gm;
                     const match = rege.exec(data);
                     const res = match[1].trim().slice(0, -1);
@@ -167,6 +169,7 @@ bot.onText(/\/audio (.+)/, (msg, match) => {
                     });
                 })
                 .catch((e) => {
+                    console.log(html);
                     bot.sendMessage(
                         chatId,
                         "Lỗi hệ thống! BOT chỉ có thể search tới đây: "
