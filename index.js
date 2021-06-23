@@ -171,6 +171,7 @@ bot.onText(/\/audio (.+)/, (msg, match) => {
                     });
                 })
                 .catch((e) => {
+                    console.log(html);
                     bot.sendMessage(
                         chatId,
                         "Lỗi hệ thống! BOT chỉ có thể search tới đây: "
