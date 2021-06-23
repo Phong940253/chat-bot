@@ -162,7 +162,7 @@ bot.onText(/\/audio (.+)/, (msg, match) => {
                     const match = rege.exec(data);
                     const res = match[1].trim().slice(0, -1);
                     const object = eval("[" + res + "]");
-                    const resp = object[0].file;
+                    const resp = object[1].file;
                     // console.log(object);
                     bot.sendMessage(chatId, resp).then(() => {
                         pollinglikeV0(chatId);
