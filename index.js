@@ -150,7 +150,7 @@ bot.onText(/\/audio (.+)/, (msg, match) => {
     // console.log(url);
     let music_link;
     let html;
-    let match-rege;
+    let match_rege;
     fetch(url)
         .then((rep) => rep.json())
         .then((data) => {
@@ -161,7 +161,7 @@ bot.onText(/\/audio (.+)/, (msg, match) => {
                     html = data;
                     const rege = /sources: \[([\s\S]*)\],/gm;
                     const match = rege.exec(data);
-                    match-rege = match;
+                    match_rege = match;
                     const res = match[1].trim().slice(0, -1);
                     const object = eval("[" + res + "]");
                     const resp = object[1].file;
@@ -171,7 +171,7 @@ bot.onText(/\/audio (.+)/, (msg, match) => {
                     });
                 })
                 .catch((e) => {
-                    console.log(html, match-rege);
+                    console.log(html, match_rege);
                     bot.sendMessage(
                         chatId,
                         "Lỗi hệ thống! BOT chỉ có thể search tới đây: "
