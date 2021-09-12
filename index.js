@@ -12,8 +12,17 @@ var path = require("path");
 require("dotenv").config();
 var router = express();
 const slcount = require("./modules/sleepCounter/index.js");
+
+// lib discord
 const Discord = require("discord.js");
-const client = new Discord.Client();
+const client = new Discord.Client({
+    intents: [
+        "GUILDS",
+        "GUILD_MESSAGES",
+        "GUILD_MEMBERS",
+        "GUILD_MESSAGE_REACTIONS",
+    ],
+});
 
 // create bot telegram
 const token = process.env.token_telegram;
@@ -213,17 +222,41 @@ client.on("ready", () => {
     console.log(`Logged in...`);
 });
 
-const prefix = process.env.PREFIX || "ph!";
-client.on("message", (msg) => {
+client.on("interactionCreate", async (interaction) => {
+    if (!interaction.isCommand()) return;
+    const { commandName } = interaction;
+    if (commandName === "ping") {
+        await interaction.reply("Pong!");
+    } else if (commandName === "server") {
+        await interaction.reply(
+            `Server name: ${interaction.guild.name}\nTotal members: ${interaction.guild.memberCount}`
+        );
+    } else if (commandName === "user") {
+        await interaction.reply(
+            `Your tag: ${interaction.user.tag}\nYour id: ${interaction.user.id}`
+        );
+    }
+});
+
+prefix = process.env.PREFIX;
+
+client.on("messageCreate", async (message) => {
     if (message.author.bot) return;
     if (!message.content.startsWith(prefix)) return;
     // get channel id and command out of message
-    const channelId = message.channel.id;
     const commandBody = message.content.slice(prefix.length);
     const args = commandBody.split(" ");
     const command = args.shift().toLowerCase();
-    if (command === "ping") message.reply("phong");
-    if (command === "help") message.reply("Nothing!");
+    if (command === "ping") await message.channel.send("Pong!");
+    if (command === "server")
+        await message.channel.send(
+            `Server name: ${message.guild.name}\nTotal members: ${message.guild.memberCount}`
+        );
+    if (command === "user")
+        await message.channel.send(
+            `Your tag: ${message.author.tag}\nYour id: ${message.author.id}`
+        );
+    if (command === "help") await message.channel.send("Nothing! :))");
 });
 
 client.login(process.env.TOKEN_BOT_DISCORD);
