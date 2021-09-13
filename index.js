@@ -12,6 +12,7 @@ var path = require("path");
 require("dotenv").config();
 var router = express();
 const slcount = require("./modules/sleepCounter/index.js");
+const embed = require("./discord/embed.js");
 
 // lib discord
 const Discord = require("discord.js");
@@ -257,7 +258,8 @@ client.on("messageCreate", async (message) => {
         await message.channel.send(
             `Your tag: ${message.author.tag}\nYour id: ${message.author.id}`
         );
-    else if (command === "help") await message.channel.send("Nothing! :))");
+    else if (command === "help")
+        await message.channel.send({ embeds: [embed.helpEmbed] });
     else if (command === "sleep" || command === "ngủ") {
         await message.channel.send(slcount.sleepCounter());
     }
