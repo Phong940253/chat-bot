@@ -277,10 +277,7 @@ client.on("messageCreate", async (message) => {
     }
     //wake command
     else if (command === "wake" || command === "dậy" || command === "thức") {
-        if (
-            wakeCommand.test(args.join("")) &&
-            parseInt(args[0].substring(0, 2)) < 24
-        ) {
+        if (wakeCommand.test(args.join(""))) {
             // console.log(args);
             match = args.join("").match(wakeCommand);
             // console.log(match);
