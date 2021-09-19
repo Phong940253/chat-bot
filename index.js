@@ -254,7 +254,7 @@ client.on("messageCreate", async (message) => {
     const commandBody = message.content.slice(prefix.length);
     const args = commandBody.split(" ");
     const command = args.shift().toLowerCase();
-    let wakeCommand = /([01]+\d|2[0-3]|\d\l)(?:[:h]([0-5]\d)){0,2}/i;
+    let wakeCommand = /([01]+\d|2[0-3]|\d)(?:[:h]([0-5]\d)){0,2}/i;
     // ping command
     if (command === "ping")
         await message.channel.send(`Pong! ${message.client.ws.ping}ms.`);
@@ -283,6 +283,7 @@ client.on("messageCreate", async (message) => {
             // console.log(match);
             await message.channel.send(slcount.wakeCounter(match));
         } else {
+            // console.log(args);
             await message.channel.send("Lỗi cú pháp!");
         }
         // await message.channel.send(args);
