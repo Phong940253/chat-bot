@@ -2,6 +2,7 @@
 // A simple chat bot server
 const P = require("bluebird");
 const fetch = require("node-fetch");
+
 const TelegramBot = require("node-telegram-bot-api");
 var logger = require("morgan");
 var http = require("http");
@@ -9,10 +10,10 @@ var bodyParser = require("body-parser");
 var express = require("express");
 var request = require("request");
 var path = require("path");
-require("dotenv").config();
 var router = express();
 const slcount = require("./modules/sleepCounter/index.js");
 const embed = require("./discord/embed.js");
+require("dotenv").config();
 
 // lib discord
 const Discord = require("discord.js");
@@ -25,12 +26,7 @@ const client = new Discord.Client({
     ],
 });
 
-// create bot telegram
-const token = process.env.token_telegram;
-const url = process.env.APP_URL;
-const bot = new TelegramBot(token, { polling: true });
-bot.setWebHook(url + "/bot" + token);
-
+//BOT FACEBOOK
 var app = express();
 app.use(logger("dev"));
 app.use(bodyParser.json());
@@ -46,6 +42,7 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname + "/index.html"));
 });
 
+// verify webhook facebook
 app.get("/webhook", (req, res) => {
     // Your verify token. Should be a random string.
     let VERIFY_TOKEN = process.env.verify_token;
@@ -119,6 +116,13 @@ function sendMessage(senderId, message) {
         },
     });
 }
+//------------------------------------------------------------------
+
+// BOT TELEGRAM
+const token = process.env.token_telegram;
+const url = process.env.APP_URL;
+const bot = new TelegramBot(token, { polling: true });
+bot.setWebHook(url + "/bot" + token);
 
 pollinglike = (id) => {
     const question = "Bạn cảm thấy thích tui chứ?!";
@@ -218,9 +222,10 @@ bot.on("message", (msg) => {
 });
 
 bot.on("polling_error", console.log);
+//-----------------------------------------------------------------------
 
 client.on("ready", () => {
-    console.log(`Logged in...`);
+    console.log(`Logged in bot discord...`);
 });
 
 client.on("interactionCreate", async (interaction) => {
@@ -241,6 +246,7 @@ client.on("interactionCreate", async (interaction) => {
 
 prefix = process.env.PREFIX;
 
+//common commands
 client.on("messageCreate", async (message) => {
     if (message.author.bot) return;
     if (!message.content.startsWith(prefix)) return;
@@ -248,20 +254,43 @@ client.on("messageCreate", async (message) => {
     const commandBody = message.content.slice(prefix.length);
     const args = commandBody.split(" ");
     const command = args.shift().toLowerCase();
+    let wakeCommand = /([01]+\d|2[0-3]|\d\l)(?:[:h]([0-5]\d)){0,2}/i;
+    // ping command
     if (command === "ping")
         await message.channel.send(`Pong! ${message.client.ws.ping}ms.`);
+    // server command
     else if (command === "server")
         await message.channel.send(
             `Server name: ${message.guild.name}\nTotal members: ${message.guild.memberCount}`
         );
+    // user command
     else if (command === "user")
         await message.channel.send(
             `Your tag: ${message.author.tag}\nYour id: ${message.author.id}`
         );
+    // help command
     else if (command === "help")
         await message.channel.send({ embeds: [embed.helpEmbed] });
+    // sleep command
     else if (command === "sleep" || command === "ngủ") {
         await message.channel.send(slcount.sleepCounter());
+    }
+    //wake command
+    else if (command === "wake" || command === "dậy" || command === "thức") {
+        if (
+            wakeCommand.test(args.join("")) &&
+            parseInt(args[0].substring(0, 2)) < 24
+        ) {
+            // console.log(args);
+            match = args.join("").match(wakeCommand);
+            // console.log(match);
+            await message.channel.send(slcount.wakeCounter(match));
+        } else {
+            await message.channel.send("Lỗi cú pháp!");
+        }
+        // await message.channel.send(args);
+        // match = wakeCommand.match(command);
+        // await message.channel.send(slcount.wakeCounter(match));
     }
 });
 

@@ -32,7 +32,13 @@ exports.sleepCounter = () => {
 };
 
 exports.wakeCounter = (match) => {
-    let date = new Date(2021, 6, 22, match[1], match[2]);
+    let date = new Date(
+        2021,
+        6,
+        22,
+        match[1],
+        match[2] == undefined ? 0 : match[2]
+    );
     let time = [];
     let now = date.getTime();
     let res =
