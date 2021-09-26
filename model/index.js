@@ -2,7 +2,7 @@ const tf = require("@tensorflow/tfjs-node");
 const axios = require("axios");
 
 const model = tf.loadGraphModel(
-    "http://localhost:3000/pokemon_model/model.json"
+    `http://localhost:${process.env.PORT || 3000}/pokemon_model/model.json`
 );
 
 const convertImage = (imageBuffer) => {
