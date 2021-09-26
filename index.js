@@ -13,6 +13,8 @@ var path = require("path");
 var router = express();
 const slcount = require("./modules/sleepCounter/index.js");
 const embed = require("./discord/embed.js");
+const pokemonModel = require("./model");
+
 require("dotenv").config();
 
 // lib discord
@@ -41,6 +43,8 @@ app.listen(process.env.PORT || 3000);
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname + "/index.html"));
 });
+
+app.use(express.static("public"));
 
 // verify webhook facebook
 app.get("/webhook", (req, res) => {
@@ -244,10 +248,35 @@ client.on("interactionCreate", async (interaction) => {
     }
 });
 
-prefix = process.env.PREFIX;
+const prefix = process.env.PREFIX;
+const model = pokemonModel.model;
 
 //common commands
 client.on("messageCreate", async (message) => {
+    console.log(message.author.id);
+    if (message.author.id == "716390085896962058") {
+        console.log("get message");
+        if (typeof message.embeds[0] != "undefined") {
+            if (typeof message.embeds[0].image != "undefined") {
+                message.channel.send("Predicting pokemon...");
+                imgUrl = message.embeds[0].image.url;
+                let imagebase64 = await pokemonModel.getBase64(imgUrl);
+                let imageBuffer = await pokemonModel.convertDataURIToBinary(
+                    imagebase64
+                );
+                // console.log(imageBuffer);
+                let tensor = await pokemonModel.convertImage(imageBuffer);
+                model.then((model) => {
+                    console.log(tensor.print());
+                    let predict = model.predict(tensor);
+                    let top1 = pokemonModel.top1(predict);
+                    message.channel.send(
+                        `This is pokemon ${top1.dataSync()[0]}`
+                    );
+                });
+            }
+        }
+    }
     if (message.author.bot) return;
     if (!message.content.startsWith(prefix)) return;
     // get channel id and command out of message
