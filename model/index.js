@@ -7,7 +7,7 @@ const model = tf.loadGraphModel(
 
 const convertImage = (imageBuffer) => {
     return (tensor = tf.node
-        .decodeImage(imageBuffer)
+        .decodeImage(imageBuffer, 3)
         .resizeNearestNeighbor([256, 256])
         .toFloat()
         .div(tf.scalar(255.0))
