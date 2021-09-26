@@ -2,7 +2,7 @@
 // A simple chat bot server
 const P = require("bluebird");
 const fetch = require("node-fetch");
-
+const fs = require("fs");
 const TelegramBot = require("node-telegram-bot-api");
 var logger = require("morgan");
 var http = require("http");
@@ -14,6 +14,7 @@ var router = express();
 const slcount = require("./modules/sleepCounter/index.js");
 const embed = require("./discord/embed.js");
 const pokemonModel = require("./model");
+const csv = require("fast-csv");
 
 require("dotenv").config();
 
@@ -270,10 +271,11 @@ client.on("messageCreate", async (message) => {
             // console.log(imageBuffer);
             let tensor = await pokemonModel.convertImage(imageBuffer);
             model.then((model) => {
-                console.log(tensor.print());
+                // console.log(tensor.print());
                 let predict = model.predict(tensor);
                 let top1 = pokemonModel.top1(predict);
-                message.channel.send(`This is pokemon ${top1.dataSync()[0]}`);
+                let namePokemon = className[top1.dataSync()[0]]["name.en"];
+                message.channel.send(`This is pokemon ${namePokemon}`);
             });
         }
     }
@@ -325,3 +327,12 @@ client.on("messageCreate", async (message) => {
 });
 
 client.login(process.env.TOKEN_BOT_DISCORD);
+
+const className = [];
+fs.createReadStream(path.resolve(__dirname, "pokemon.csv"))
+    .pipe(csv.parse({ headers: true }))
+    .on("error", (error) => console.error(error))
+    .on("data", (row) => className.push(row))
+    .on("end", (rowCount) => {
+        className.sort((a, b) => (a.id > b.id && 1) || -1);
+    });
