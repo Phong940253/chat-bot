@@ -256,7 +256,7 @@ const model = pokemonModel.model;
 client.on("messageCreate", async (message) => {
     console.log(message.author.id);
     if (message.author.id == "716390085896962058") {
-        console.log("get message");
+        // console.log("get message");
         if (
             typeof message.embeds[0] != "undefined" &&
             typeof message.embeds[0].image != "undefined" &&
@@ -274,10 +274,12 @@ client.on("messageCreate", async (message) => {
                 // console.log(tensor.print());
                 let predict = model.predict(tensor);
                 let top1 = pokemonModel.top1(predict).dataSync()[0];
-                console.log(top1);
                 let namePokemon = className[top1]["name.en"];
-                console.log(namePokemon);
-                // message.channel.send(`This is pokemon ${namePokemon}`);
+                console.log(top1, namePokemon);
+                message.channel.send(
+                    `This is pokemon ${namePokemon}, id: ${top1}`
+                );
+                message.channel.send(`p!c ${namePokemon}`);
             });
         }
     }
