@@ -273,9 +273,11 @@ client.on("messageCreate", async (message) => {
             model.then((model) => {
                 // console.log(tensor.print());
                 let predict = model.predict(tensor);
-                let top1 = pokemonModel.top1(predict);
-                let namePokemon = className[top1.dataSync()[0]]["name.en"];
-                message.channel.send(`This is pokemon ${namePokemon}`);
+                let top1 = pokemonModel.top1(predict).dataSync()[0];
+                console.log(top1);
+                let namePokemon = className[top1]["name.en"];
+                console.log(namePokemon);
+                // message.channel.send(`This is pokemon ${namePokemon}`);
             });
         }
     }

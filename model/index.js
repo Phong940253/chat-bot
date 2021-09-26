@@ -16,12 +16,17 @@ const convertImage = (imageBuffer) => {
 
 const getBase64 = (url) => {
     return axios
-        .get(url, {
-            responseType: "arraybuffer",
-        })
-        .then((response) =>
-            Buffer.from(response.data, "binary").toString("base64")
-        );
+        .get(
+            url,
+            {
+                responseType: "arraybuffer",
+            },
+            { timeout: 60 }
+        )
+        .then((response) => {
+            // console.log(response);
+            return Buffer.from(response.data, "binary").toString("base64");
+        });
 };
 
 const convertDataURIToBinary = (dataURI) => {
