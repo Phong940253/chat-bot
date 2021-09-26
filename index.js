@@ -256,25 +256,25 @@ client.on("messageCreate", async (message) => {
     console.log(message.author.id);
     if (message.author.id == "716390085896962058") {
         console.log("get message");
-        if (typeof message.embeds[0] != "undefined") {
-            if (typeof message.embeds[0].image != "undefined") {
-                message.channel.send("Predicting pokemon...");
-                imgUrl = message.embeds[0].image.url;
-                let imagebase64 = await pokemonModel.getBase64(imgUrl);
-                let imageBuffer = await pokemonModel.convertDataURIToBinary(
-                    imagebase64
-                );
-                // console.log(imageBuffer);
-                let tensor = await pokemonModel.convertImage(imageBuffer);
-                model.then((model) => {
-                    console.log(tensor.print());
-                    let predict = model.predict(tensor);
-                    let top1 = pokemonModel.top1(predict);
-                    message.channel.send(
-                        `This is pokemon ${top1.dataSync()[0]}`
-                    );
-                });
-            }
+        if (
+            typeof message.embeds[0] != "undefined" &&
+            typeof message.embeds[0].image != "undefined" &&
+            message.embeds[0].image != null
+        ) {
+            message.channel.send("Predicting pokemon...");
+            imgUrl = message.embeds[0].image.url;
+            let imagebase64 = await pokemonModel.getBase64(imgUrl);
+            let imageBuffer = await pokemonModel.convertDataURIToBinary(
+                imagebase64
+            );
+            // console.log(imageBuffer);
+            let tensor = await pokemonModel.convertImage(imageBuffer);
+            model.then((model) => {
+                console.log(tensor.print());
+                let predict = model.predict(tensor);
+                let top1 = pokemonModel.top1(predict);
+                message.channel.send(`This is pokemon ${top1.dataSync()[0]}`);
+            });
         }
     }
     if (message.author.bot) return;
