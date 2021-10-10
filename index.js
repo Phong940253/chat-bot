@@ -273,13 +273,24 @@ client.on("messageCreate", async (message) => {
             model.then((model) => {
                 // console.log(tensor.print());
                 let predict = model.predict(tensor);
-                let top1 = pokemonModel.top1(predict).dataSync()[0];
-                let namePokemon = className[top1]["name.en"];
-                console.log(top1, namePokemon);
+                const top3 = pokemonModel.topk(predict, 3);
+                const topV = top3["values"].arraySync()[0];
+                const topI = top3["indices"].arraySync()[0];
+                let name = [
+                    className[topI[0]]["name.en"],
+                    className[topI[1]]["name.en"],
+                    className[topI[2]]["name.en"],
+                ];
                 message.channel.send(
-                    `This is pokemon ${namePokemon}, id: ${top1}`
+                    `This is pokemon ${name[0]}: ${
+                        Math.round(topV[0] * 10000) / 100
+                    }%, or ${name[1]}: ${
+                        Math.round(topV[1] * 10000) / 100
+                    }%, or ${name[2]}: ${Math.round(topV[2] * 10000) / 100}%`
                 );
-                message.channel.send(`p!c ${namePokemon}`);
+                topV.map((u, v) => {
+                    message.channel.send(`%c ${name[v]}`);
+                });
             });
         }
     }

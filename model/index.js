@@ -37,6 +37,10 @@ let top1 = (predictions) => {
     return tf.argMax(predictions, 1);
 };
 
+let topk = (predictions, k) => {
+    return tf.topk(predictions, k);
+};
+
 let top5 = (predictions) => {
     return Array.from(predictions)
         .map(function (p, i) {
@@ -55,5 +59,6 @@ exports.getBase64 = getBase64;
 exports.model = model;
 exports.top1 = top1;
 exports.top5 = top5;
+exports.topk = topk;
 exports.convertImage = convertImage;
 exports.convertDataURIToBinary = convertDataURIToBinary;

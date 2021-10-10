@@ -5,7 +5,7 @@ from keras import backend as K
 def swish_activation(x):
     return (K.sigmoid(x) * x)
 
-keras_model_path = "./model3.h5"
+keras_model_path = "./model.h5"
 output_model_path = "exported-models/tf/"
 
 def convert_keras_to_graph():
