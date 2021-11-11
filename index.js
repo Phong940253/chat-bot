@@ -15,6 +15,7 @@ const slcount = require("./modules/sleepCounter/index.js");
 const embed = require("./discord/embed.js");
 const pokemonModel = require("./model");
 const csv = require("fast-csv");
+const schedule = require("node-schedule");
 
 require("dotenv").config();
 
@@ -351,3 +352,8 @@ fs.createReadStream(path.resolve(__dirname, "pokemon.csv"))
     .on("end", (rowCount) => {
         className.sort((a, b) => (a.id > b.id && 1) || -1);
     });
+
+const job = schedule.scheduleJob("0 7 * * *", async () => {
+    channel = guild.channels.get("854362046262411279");
+    await message.channel.send(`Dậy sớm để thành công!`);
+});
