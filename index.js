@@ -353,7 +353,7 @@ fs.createReadStream(path.resolve(__dirname, "pokemon.csv"))
         className.sort((a, b) => (a.id > b.id && 1) || -1);
     });
 
-const job = schedule.scheduleJob("5 7 * * *", async () => {
+const job = schedule.scheduleJob("12 7 * * *", async () => {
     channel = guild.channels.get("854362046262411279");
     await message.channel.send(`Dậy sớm để thành công!`);
 });
