@@ -74,7 +74,7 @@ app.get("/webhook", (req, res) => {
 });
 
 // Đoạn code xử lý khi có người nhắn tin cho bot
-app.post("/webhook", function (req, res) {
+app.post("/webhook", function(req, res) {
     var entries = req.body.entry;
     for (var entry of entries) {
         var messaging = entry.messaging;
@@ -234,7 +234,7 @@ client.on("ready", () => {
     console.log(`Logged in bot discord...`);
 });
 
-client.on("interactionCreate", async (interaction) => {
+client.on("interactionCreate", async(interaction) => {
     if (!interaction.isCommand()) return;
     const { commandName } = interaction;
     if (commandName === "ping") {
@@ -254,7 +254,7 @@ const prefix = process.env.PREFIX;
 const model = pokemonModel.model;
 
 //common commands
-client.on("messageCreate", async (message) => {
+client.on("messageCreate", async(message) => {
     console.log(message.author.id);
     if (message.author.id == "716390085896962058") {
         // console.log("get message");
@@ -353,10 +353,19 @@ fs.createReadStream(path.resolve(__dirname, "pokemon.csv"))
         className.sort((a, b) => (a.id > b.id && 1) || -1);
     });
 
-const job = schedule.scheduleJob("0 7 * * *", async () => {
+const job = schedule.scheduleJob("0 7 * * *", async() => {
     let guild = client.guilds.cache.get("854362045637591041"); // returns a Guild or undefined channel;
     if (guild) {
         channel = guild.channels.cache.get("854362046262411279");
         await channel.send(`Dậy sớm để thành công!`);
+    }
+});
+const dateTime = schedule.scheduleJob("* */1 * * *", async() => {
+    let guild = client.guilds.cache.get("854362045637591041"); // returns a Guild or undefined channel;
+    if (guild) {
+        channel = guild.channels.cache.get("854362046262411279");
+        const date1 = new Date();
+        const date = date1.getHours() + ":00 T" + date1.getDay() + " " + date1.getMonth() + "-" + date1.getDate();
+        await channel.send(date); // send date time every hour
     }
 });
