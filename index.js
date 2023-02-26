@@ -354,9 +354,22 @@ fs.createReadStream(path.resolve(__dirname, "pokemon.csv"))
     });
 
 const job = schedule.scheduleJob("0 7 * * *", async () => {
-    let guild = client.guilds.cache.get("854362045637591041"); // returns a Guild or undefined channel;
-    if (guild) {
-        channel = guild.channels.cache.get("854362046262411279");
-        await channel.send(`Dậy sớm để thành công!`);
-    }
+    list_guid = [
+        {
+            guild_id: "854362045637591041",
+            channel_id: "854362046262411279",
+        },
+        {
+            guild_id: "993891895166115920",
+            channel_id: "854362046262411279",
+        },
+    ];
+
+    list_guid.map(async (u) => {
+        let guild = client.guilds.cache.get(u.guild_id); // returns a Guild or undefined channel;
+        if (guild) {
+            channel = guild.channels.cache.get(u.channel_id);
+            await channel.send(`Dậy sớm để thành công!`);
+        }
+    });
 });
